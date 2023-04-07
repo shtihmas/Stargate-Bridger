@@ -79,15 +79,15 @@ def swap_usdc_polygon_to_fantom(amount, min_amount):
     refund_address = account.address
     amountIn = amount
     amountOutMin = min_amount
-    lzTxObj = [0, 0, b'0x0000000000000000000000000000000000000001']
-    to = bytes(account.address, 'utf-8')
-    data = b'0x'
+    lzTxObj = [0, 0, '0x0000000000000000000000000000000000000001']
+    to = account.address
+    data = '0x'
 
     swap_txn = stargate_polygon_contract.functions.swap(
         chainId, source_pool_id, dest_pool_id, refund_address, amountIn, amountOutMin, lzTxObj, to, data
     ).build_transaction({
         'from': address,
-        'value': polygon_w3.to_wei(amount, 'ether'),
+        'value': fee,
         'gas': 500000,
         'gasPrice': polygon_w3.eth.gas_price,
         'nonce': polygon_w3.eth.get_transaction_count(address),
@@ -136,15 +136,15 @@ def swap_usdc_fantom_to_polygon(amount, min_amount):
     refund_address = account.address
     amountIn = amount
     amountOutMin = min_amount
-    lzTxObj = [0, 0, b'0x0000000000000000000000000000000000000001']
-    to = bytes(account.address, 'utf-8')
-    data = b'0x'
+    lzTxObj = [0, 0, '0x0000000000000000000000000000000000000001']
+    to = account.address
+    data = '0x'
 
     swap_txn = stargate_polygon_contract.functions.swap(
         chainId, source_pool_id, dest_pool_id, refund_address, amountIn, amountOutMin, lzTxObj, to, data
     ).build_transaction({
         'from': address,
-        'value': polygon_w3.to_wei(0.1, 'ether'),
+        'value': fee,
         'gas': 500000,
         'gasPrice': polygon_w3.eth.gas_price,
         'nonce': polygon_w3.eth.get_transaction_count(address),
