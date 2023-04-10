@@ -3,7 +3,7 @@ from web3 import Web3
 import time
 
 # enter your amount to bridge
-AMOUNT_TO_SWAP = 10
+AMOUNT_TO_SWAP = 20  # 20 = 20 USDC
 
 # enter slippage as shown => 1 = 0.1%, 5 = 0.5%, 10 = 1%
 SLIPPAGE = 5
@@ -70,32 +70,66 @@ def swap_usdc_polygon_to_fantom(amount, min_amount):
         print(f"POLYGON | USDT APPROVED https://polygonscan.com/tx/{approve_txn_hash.hex()}")
         nonce += 1
 
-        time.sleep(10)
+        time.sleep(50)
 
-    # Stargate Swap
-    chainId = 112
-    source_pool_id = 1
-    dest_pool_id = 1
-    refund_address = account.address
-    amountIn = amount
-    amountOutMin = min_amount
-    lzTxObj = [0, 0, '0x0000000000000000000000000000000000000001']
-    to = account.address
-    data = '0x'
+    usdc_balance = usdc_polygon_contract.functions.balanceOf(address).call()
 
-    swap_txn = stargate_polygon_contract.functions.swap(
-        chainId, source_pool_id, dest_pool_id, refund_address, amountIn, amountOutMin, lzTxObj, to, data
-    ).build_transaction({
-        'from': address,
-        'value': fee,
-        'gas': 500000,
-        'gasPrice': polygon_w3.eth.gas_price,
-        'nonce': polygon_w3.eth.get_transaction_count(address),
-    })
+    if usdc_balance >= amount:
 
-    signed_swap_txn = polygon_w3.eth.account.sign_transaction(swap_txn, PRIVATE_KEY)
-    swap_txn_hash = polygon_w3.eth.send_raw_transaction(signed_swap_txn.rawTransaction)
-    return swap_txn_hash
+        # Stargate Swap
+        chainId = 112
+        source_pool_id = 1
+        dest_pool_id = 1
+        refund_address = account.address
+        amountIn = amount
+        amountOutMin = min_amount
+        lzTxObj = [0, 0, '0x0000000000000000000000000000000000000001']
+        to = account.address
+        data = '0x'
+
+        swap_txn = stargate_polygon_contract.functions.swap(
+            chainId, source_pool_id, dest_pool_id, refund_address, amountIn, amountOutMin, lzTxObj, to, data
+        ).build_transaction({
+            'from': address,
+            'value': fee,
+            'gas': 500000,
+            'gasPrice': polygon_w3.eth.gas_price,
+            'nonce': polygon_w3.eth.get_transaction_count(address),
+        })
+
+        signed_swap_txn = polygon_w3.eth.account.sign_transaction(swap_txn, PRIVATE_KEY)
+        swap_txn_hash = polygon_w3.eth.send_raw_transaction(signed_swap_txn.rawTransaction)
+        return swap_txn_hash
+
+    elif usdc_balance < amount:
+
+        min_amount = usdc_balance - (usdc_balance * 5) // 1000
+
+        # Stargate Swap
+        chainId = 112
+        source_pool_id = 1
+        dest_pool_id = 1
+        refund_address = account.address
+        amountIn = usdc_balance
+        amountOutMin = min_amount
+        lzTxObj = [0, 0, '0x0000000000000000000000000000000000000001']
+        to = account.address
+        data = '0x'
+
+        swap_txn = stargate_polygon_contract.functions.swap(
+            chainId, source_pool_id, dest_pool_id, refund_address, amountIn, amountOutMin, lzTxObj, to, data
+        ).build_transaction({
+            'from': address,
+            'value': fee,
+            'gas': 500000,
+            'gasPrice': polygon_w3.eth.gas_price,
+            'nonce': polygon_w3.eth.get_transaction_count(address),
+        })
+
+        signed_swap_txn = polygon_w3.eth.account.sign_transaction(swap_txn, PRIVATE_KEY)
+        swap_txn_hash = polygon_w3.eth.send_raw_transaction(signed_swap_txn.rawTransaction)
+        return swap_txn_hash
+
 
 
 # Fantom -> Polygon USDC
@@ -127,54 +161,87 @@ def swap_usdc_fantom_to_polygon(amount, min_amount):
         print(f"FANTOM | USDC APPROVED | https://ftmscan.com/tx/{approve_txn_hash.hex()} ")
         nonce += 1
 
-        time.sleep(10)
+        time.sleep(50)
 
-    # Stargate Swap
-    chainId = 109
-    source_pool_id = 1
-    dest_pool_id = 1
-    refund_address = account.address
-    amountIn = amount
-    amountOutMin = min_amount
-    lzTxObj = [0, 0, '0x0000000000000000000000000000000000000001']
-    to = account.address
-    data = '0x'
+    usdc_balance = usdc_fantom_contract.functions.balanceOf(address).call()
 
-    swap_txn = stargate_polygon_contract.functions.swap(
-        chainId, source_pool_id, dest_pool_id, refund_address, amountIn, amountOutMin, lzTxObj, to, data
-    ).build_transaction({
-        'from': address,
-        'value': fee,
-        'gas': 500000,
-        'gasPrice': polygon_w3.eth.gas_price,
-        'nonce': polygon_w3.eth.get_transaction_count(address),
-    })
+    if usdc_balance >= amount:
 
-    signed_swap_txn = polygon_w3.eth.account.sign_transaction(swap_txn, PRIVATE_KEY)
-    swap_txn_hash = polygon_w3.eth.send_raw_transaction(signed_swap_txn.rawTransaction)
-    return swap_txn_hash
+        # Stargate Swap
+        chainId = 109
+        source_pool_id = 1
+        dest_pool_id = 1
+        refund_address = account.address
+        amountIn = amount
+        amountOutMin = min_amount
+        lzTxObj = [0, 0, '0x0000000000000000000000000000000000000001']
+        to = account.address
+        data = '0x'
+
+        swap_txn = stargate_polygon_contract.functions.swap(
+            chainId, source_pool_id, dest_pool_id, refund_address, amountIn, amountOutMin, lzTxObj, to, data
+        ).build_transaction({
+            'from': address,
+            'value': fee,
+            'gas': 500000,
+            'gasPrice': polygon_w3.eth.gas_price,
+            'nonce': polygon_w3.eth.get_transaction_count(address),
+        })
+
+        signed_swap_txn = polygon_w3.eth.account.sign_transaction(swap_txn, PRIVATE_KEY)
+        swap_txn_hash = polygon_w3.eth.send_raw_transaction(signed_swap_txn.rawTransaction)
+        return swap_txn_hash
+
+    elif usdc_balance < amount:
+
+        min_amount = usdc_balance - (usdc_balance * 5) // 1000
+
+        # Stargate Swap
+        chainId = 109
+        source_pool_id = 1
+        dest_pool_id = 1
+        refund_address = account.address
+        amountIn = usdc_balance
+        amountOutMin = min_amount
+        lzTxObj = [0, 0, '0x0000000000000000000000000000000000000001']
+        to = account.address
+        data = '0x'
+
+        swap_txn = stargate_polygon_contract.functions.swap(
+            chainId, source_pool_id, dest_pool_id, refund_address, amountIn, amountOutMin, lzTxObj, to, data
+        ).build_transaction({
+            'from': address,
+            'value': fee,
+            'gas': 500000,
+            'gasPrice': polygon_w3.eth.gas_price,
+            'nonce': polygon_w3.eth.get_transaction_count(address),
+        })
+
+        signed_swap_txn = polygon_w3.eth.account.sign_transaction(swap_txn, PRIVATE_KEY)
+        swap_txn_hash = polygon_w3.eth.send_raw_transaction(signed_swap_txn.rawTransaction)
+        return swap_txn_hash
 
 
 def main():
     counter = 0
-    while counter < TIMES:
-        slippage = SLIPPAGE
-        amount_to_swap = AMOUNT_TO_SWAP * (10 ** 6)
-        min_amount = amount_to_swap - (amount_to_swap * slippage) // 1000
+    slippage = SLIPPAGE
+    amount_to_swap = AMOUNT_TO_SWAP * (10 ** 6)
+    min_amount = amount_to_swap - (amount_to_swap * slippage) // 1000
 
+    while counter < TIMES:
         print("Swapping USDC from Polygon to Fantom...")
         polygon_to_fantom_txn_hash = swap_usdc_polygon_to_fantom(amount_to_swap, min_amount)
         print(f"Transaction: https://polygonscan.com/tx/{polygon_to_fantom_txn_hash.hex()}")
 
         print("Waiting for the swap to complete...")
-        time.sleep(1200)
+        time.sleep(1500)
 
         print("Swapping USDC from Fantom to Polygon...")
         fantom_to_polygon_txn_hash = swap_usdc_fantom_to_polygon(amount_to_swap, min_amount)
         print(f"Transaction: https://ftmscan.com/tx/{fantom_to_polygon_txn_hash.hex()}")
 
         print("Waiting for the swap to complete...")
-        time.sleep(1200)
+        time.sleep(100)
 
         counter += 1
 
@@ -183,3 +250,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
