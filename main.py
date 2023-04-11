@@ -184,12 +184,12 @@ def swap_usdc_fantom_to_polygon(amount, min_amount):
             'from': address,
             'value': fee,
             'gas': 500000,
-            'gasPrice': polygon_w3.eth.gas_price,
-            'nonce': polygon_w3.eth.get_transaction_count(address),
+            'gasPrice': fantom_w3.eth.gas_price,
+            'nonce': fantom_w3.eth.get_transaction_count(address),
         })
 
-        signed_swap_txn = polygon_w3.eth.account.sign_transaction(swap_txn, PRIVATE_KEY)
-        swap_txn_hash = polygon_w3.eth.send_raw_transaction(signed_swap_txn.rawTransaction)
+        signed_swap_txn = fantom_w3.eth.account.sign_transaction(swap_txn, PRIVATE_KEY)
+        swap_txn_hash = fantom_w3.eth.send_raw_transaction(signed_swap_txn.rawTransaction)
         return swap_txn_hash
 
     elif usdc_balance < amount:
@@ -213,12 +213,12 @@ def swap_usdc_fantom_to_polygon(amount, min_amount):
             'from': address,
             'value': fee,
             'gas': 500000,
-            'gasPrice': polygon_w3.eth.gas_price,
-            'nonce': polygon_w3.eth.get_transaction_count(address),
+            'gasPrice': fantom_w3.eth.gas_price,
+            'nonce': fantom_w3.eth.get_transaction_count(address),
         })
 
-        signed_swap_txn = polygon_w3.eth.account.sign_transaction(swap_txn, PRIVATE_KEY)
-        swap_txn_hash = polygon_w3.eth.send_raw_transaction(signed_swap_txn.rawTransaction)
+        signed_swap_txn = fantom_w3.eth.account.sign_transaction(swap_txn, PRIVATE_KEY)
+        swap_txn_hash = fantom_w3.eth.send_raw_transaction(signed_swap_txn.rawTransaction)
         return swap_txn_hash
 
 
@@ -250,4 +250,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
