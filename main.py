@@ -183,7 +183,7 @@ def swap_usdc_fantom_to_polygon(amount, min_amount):
         ).build_transaction({
             'from': address,
             'value': fee,
-            'gas': 500000,
+            'gas': 600000,
             'gasPrice': fantom_w3.eth.gas_price,
             'nonce': fantom_w3.eth.get_transaction_count(address),
         })
@@ -212,7 +212,7 @@ def swap_usdc_fantom_to_polygon(amount, min_amount):
         ).build_transaction({
             'from': address,
             'value': fee,
-            'gas': 500000,
+            'gas': 600000,
             'gasPrice': fantom_w3.eth.gas_price,
             'nonce': fantom_w3.eth.get_transaction_count(address),
         })
