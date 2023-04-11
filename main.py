@@ -178,7 +178,7 @@ def swap_usdc_fantom_to_polygon(amount, min_amount):
         to = account.address
         data = '0x'
 
-        swap_txn = stargate_polygon_contract.functions.swap(
+        swap_txn = stargate_fantom_contract.functions.swap(
             chainId, source_pool_id, dest_pool_id, refund_address, amountIn, amountOutMin, lzTxObj, to, data
         ).build_transaction({
             'from': address,
@@ -207,7 +207,7 @@ def swap_usdc_fantom_to_polygon(amount, min_amount):
         to = account.address
         data = '0x'
 
-        swap_txn = stargate_polygon_contract.functions.swap(
+        swap_txn = stargate_fantom_contract.functions.swap(
             chainId, source_pool_id, dest_pool_id, refund_address, amountIn, amountOutMin, lzTxObj, to, data
         ).build_transaction({
             'from': address,
