@@ -10,7 +10,10 @@
 
 ### <sup>***❗You need to have Python 3.10+ installed❗***</sup>
 
-  1. Fund your wallets in the **Polygon** network with USDC and some Matic for transaction fees, and **Fantom** network with some FTM for transaction fees.
+
+  1. Fund your wallet in the **Polygon** network with USDC and some Matic for transaction fees, and **Fantom** network with some FTM for transaction fees.
+  
+  <sup>***❗❗1 script = 1 wallet❗❗***</sup>
 
   2. **Clone repository** to yours system.
 
