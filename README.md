@@ -12,8 +12,6 @@
 
 
   1. Fund your wallet in the **Polygon** network with USDC and some Matic for transaction fees, and **Fantom** network with some FTM for transaction fees.
-  
-  <sup>***❗❗1 script = 1 wallet❗❗***</sup>
 
   2. **Clone repository** to yours system.
 
@@ -28,11 +26,8 @@ pip install web3
 ```
 
   4. Open the `main.py` and edit the values below the comments to suit your needs.
-   > Change `AMOUNT_TO_SWAP`, `SLIPPAGE`, `PRIVATE_KEY`, `TIMES` variables
-   
->❗It may be that a transaction from the Fantom network to the Polygon network will not get through in 100 seconds, so the subsequent transaction from    the Polygon network to the Fantom network will crash.
-To avoid this, put `time.sleep(200)` on `line 244` instead of `time.sleep(100)`. This will give the transaction an `extra 100 seconds` to pass. 
-In general, run transactions manually before using the script so that you know how long they will take when the script runs, and set delays based on     your observations.
+   > Change `AMOUNT_MIN`, `AMOUNT_MAX`, `TIMES` variables. 
+   > Put your private keys in private_keys.txt
 
   5. Now you're ready to start:
   ```
